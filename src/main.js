@@ -8,5 +8,16 @@ let config = {
 let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
-let rocketSpacing = borderPadding + borderUISize
-let keyF, keyR, keyLEFT, keyRIGHT, keyDOWN, keyUP;
+let keyF, keyR, keyLEFT, keyRIGHT;
+let scoreConfig = {
+    fontFamily: 'Conrier',
+    fontSize: '28px',
+    backgroundColor: '#F3B141',
+    color: '#843605',
+    align: 'right',
+    padding: {
+        top: 5,
+        bottom: 5,
+    },
+    fixedWidth: 100
+}
