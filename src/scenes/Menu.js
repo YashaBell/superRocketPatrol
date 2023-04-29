@@ -23,9 +23,9 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        this.add.text(game.config.width/2, game.config.height/2 - (borderUISize + borderPadding), 'ROCKET PATROL', menuConfig).setOrigin(0.5,0);
-        this.add.text(game.config.width/2, game.config.height/2, 'Press (F) for key controls:\n Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5,0);
-        this.add.text(game.config.width/2, game.config.height/2 + (borderUISize + borderPadding) * 2, 'Press (Left Click for  mouse controls:\n Use (MousePosition) to move & (LeftClick) to fire', menuConfig).setOrigin(0.5,0);
+        this.add.text(game.config.width/2, game.config.height/2 - (borderUISize + borderPadding)*2, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'Press (F) for key controls:\n Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+        this.mouseSettingsText = this.add.text(game.config.width/2, game.config.height/2 + (borderUISize + borderPadding) * 2, 'Press (Click here for mouse controls):\n Use (PointerPosition) to move & (LeftClick) to fire', menuConfig).setOrigin(0.5);
         // key define
         keyF= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -33,18 +33,17 @@ class Menu extends Phaser.Scene {
     }
     update() {
         const pointer = this.input.activePointer;
-
         if(Phaser.Input.Keyboard.JustDown(keyF)) {
             game.settings = {
-                inputType: 'Keys'
+                inputType: 'KEYS'
             }
             this.sound.play('sfx_select');
             this.scene.start('difficultyScene');
         }
 
-        if(pointer.isDown) {
+        if(pointer.isDown & MouseInTextBox(pointer.worldX, pointer.worldY, this.mouseSettingsText)) {
             game.settings = {
-                inputType: 'Mouse'
+                inputType: 'MOUSE'
             }
             this.sound.play('sfx_select');
             this.scene.start('difficultyScene');

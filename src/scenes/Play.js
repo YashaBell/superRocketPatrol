@@ -54,7 +54,12 @@ class Play extends Phaser.Scene {
         this.add.rectangle(0, 0, borderUISize, game.config.height, 0xffffff).setOrigin(0,0);
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xffffff).setOrigin(0,0);
     }
-    update() {
+    update(){
+
+        const pointer = this.input.activePointer;
+        pX = pointer.worldX;
+        this.click = false;
+        if(pointer.isDown)
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)){
             this.scene.restart();
         }
@@ -63,7 +68,7 @@ class Play extends Phaser.Scene {
         }
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
-            this.p1Rocket.update();
+            this.p1Rocket.update(pointer.worldX, pointer.justDown);
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
