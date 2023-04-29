@@ -5,11 +5,11 @@ class Rocket extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.isFiring = false;
         this.moveSpeed = 2;
+        this.canFire = false;
     }
 
     update(pX, pIsDown) {
         if(game.settings.inputType == 'KEYS'){
-            console.log("in keys loop");
             // left right movement
             if(!this.isFiring) {
                 if(keyLEFT.isDown && this.x >= borderUISize + this.width){
@@ -34,19 +34,26 @@ class Rocket extends Phaser.GameObjects.Sprite {
         }
         if(game.settings.inputType == 'MOUSE'){
             if(!this.isFiring) {
-                if(pX < this.x && this.x >= borderUISize + this.width){
+                if(pX < this.x - 3 && this.x >= borderUISize + this.width){
                     this.x -= this.moveSpeed;
-                } else if (pX > this.x && this.x <= game.config.width - borderUISize - this.width) {
+                } else if (pX > this.x + 3 && this.x <= game.config.width - borderUISize - this.width) {
                     this.x += this.moveSpeed;
                 }
             }
+            //requires the player to release the mouse before firing again
+            if(!pIsDown){
+                this.canFire = true;
+            }
             // fire 
-            if(pIsDown && !this.isFiring) {
+            if(pIsDown && !this.isFiring && this.canFire) {
                 this.isFiring = true;
                 this.sfxRocket.play();
             }
             // if fired move up
             if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+                this.alpha = 0;
+                let fly = play.add.sprite(ship.x, ship.y, 'miniNukeFlying').setOrigin(0,0);
+                fly.anims.play('fired'); //play animation
                 this.y -= this.moveSpeed;
             }
             // reset on miss
@@ -58,5 +65,6 @@ class Rocket extends Phaser.GameObjects.Sprite {
     reset() {
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
+        this.canFire = false;
     }
 }

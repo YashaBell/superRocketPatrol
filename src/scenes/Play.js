@@ -3,7 +3,8 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
     preload() {
-        this.load.image('rocket', './assets/rocket.png');
+        this.load.spritesheet('miniNukeFlying', './assets/miniNuke.png', {frameWidth: 20, frameHeight: 43, startFrame: 0, endFrame: 2});
+        this.load.image('miniNuke', './assets/miniNukeGrounded.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('interceptor', './assets/interceptor.png');
@@ -15,7 +16,12 @@ class Play extends Phaser.Scene {
 
         this.add.rectangle(0,borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00ff00).setOrigin(0,0);
         //add rocket (p1)
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5,0);
+        this.anims.create({
+            key: 'fired',
+            frames: this.anims.generateFrameNumbers('miniNukeFlying', {start: 0, end: 2, first: 0}),
+            frameRate: 30
+        });
+        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'miniNuke').setOrigin(0.5,0);
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30, 1).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20, 1).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10, 1).setOrigin(0,0);
@@ -68,7 +74,7 @@ class Play extends Phaser.Scene {
         }
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
-            this.p1Rocket.update(pointer.worldX, pointer.justDown);
+            this.p1Rocket.update(pointer.worldX, pointer.isDown);
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();

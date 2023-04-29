@@ -24,7 +24,6 @@ class Difficulty extends Phaser.Scene {
         if(this.game.settings.inputType == 'KEYS'){
             this.add.text(game.config.width/2, game.config.height/2, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
         }
-        console.log(game.settings.inputType);
         if(this.game.settings.inputType == 'MOUSE'){
             this.noviceText = this.add.text(game.config.width/2, game.config.height/2 - (borderUISize + borderPadding) / 2, 'Click Here for Novice', menuConfig).setOrigin(0.5);
             this.expertText = this.add.text(game.config.width/2, game.config.height/2 + (borderUISize + borderPadding) / 2, 'Click Here for Expert', menuConfig).setOrigin(0.5);
@@ -54,8 +53,6 @@ class Difficulty extends Phaser.Scene {
                 inputType: 'MOUSE'
             };
             this.sound.play('sfx_select');
-            while(pointer.isnDown()){
-            }
             this.scene.start('playScene');
 
         }
@@ -74,7 +71,7 @@ class Difficulty extends Phaser.Scene {
             game.settings = {
                 spaceshipSpeed: 4,
                 gameTimer: 45,
-                inputType: 'MOUSE'
+                inputType: 'KEYS'
             }
             this.sound.play('sfx_select');
             this.scene.start('playScene');
