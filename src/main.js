@@ -13,10 +13,9 @@ let keyF, keyR, keyLEFT, keyRIGHT, mouseLEFT;
 let pX;
 game.settings = {spaceshipSpeed: 3, gameTimer: 60, inputType: 'KEYS'};
 let scoreConfig = {
-    fontFamily: 'Conrier',
-    fontSize: '28px',
-    backgroundColor: '#F3B141',
-    color: '#843605',
+    fontFamily: 'MS Gothic',
+    fontSize: '24px',
+    color: '#00ff00',
     align: 'right',
     padding: {
         top: 5,
@@ -24,6 +23,18 @@ let scoreConfig = {
     },
     fixedWidth: 100
 }    
+let menuConfig = {
+    fontFamily: 'MS Gothic',
+    fontSize: '24px',
+    backgroundColor: '#000000',
+    color: '#00ff00',
+    align: 'center',
+    padding: {
+        top: 0,
+        bottom: 0,
+    },
+    fixedWidth: 0
+}
 function MouseInTextBox(pointerX, pointerY, textBox){
     let x1 = textBox.x - textBox.width/2;
     let x2 = textBox.x + textBox.width/2;
@@ -41,13 +52,13 @@ function MouseInTextBox(pointerX, pointerY, textBox){
 // Add your own (copyright-free) background music to the Play scene (please be mindful of the volume) (5)
 // Implement the speed increase that happens after 30 seconds in the original game (5)
 // Randomize each spaceship's movement direction at the start of each play (5)
-// Create a new scrolling tile sprite for the background (5)
+        // Create a new scrolling tile sprite for the background (5)
 // Allow the player to control the Rocket after it's fired (5)
 // 10-Point Tier
 // Create 4 new explosion sound effects and randomize which one plays on impact (10)
         // Display the time remaining (in seconds) on the screen (10)
         // Using a texture atlas, create a new animated sprite for the Spaceship enemies (10)
-// Create a new title screen (e.g., new artwork, typography, layout) (10)
+        // Create a new title screen (e.g., new artwork, typography, layout) (10)
 // Implement parallax scrolling for the background (10)
 // 15-Point Tier
         // Create a new enemy Spaceship type (w/ new artwork) that's smaller, moves faster, and is worth more points (15)

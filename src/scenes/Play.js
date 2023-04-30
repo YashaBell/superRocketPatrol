@@ -7,15 +7,14 @@ class Play extends Phaser.Scene {
         this.load.image('miniNukeG', './assets/miniNukeGrounded.png');
         this.load.spritesheet('vertibird', './assets/vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 8});
         this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('city', './assets/cityScape.png');
         this.load.image('interceptor', './assets/interceptor.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
     create(){
         //tile sprite
-        this.starfield = this.add.tileSprite(0,0,640,480, 'starfield').setOrigin(0,0);
+        this.city = this.add.tileSprite(0,0,640,480, 'city').setOrigin(0,0);
 
-        this.add.rectangle(0,borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00ff00).setOrigin(0,0);
         //add rocket (p1)
         //animation config
         this.anims.create({
@@ -34,7 +33,6 @@ class Play extends Phaser.Scene {
             frameRate: 30
         });
 
-        this.miniNuke = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'miniNukeG').setOrigin(0.5,0);
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'vertibird', 0, 30, 1).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'vertibird', 0, 20, 1).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'vertibird', 0, 10, 1).setOrigin(0,0);
@@ -51,7 +49,6 @@ class Play extends Phaser.Scene {
         // start score
         this.p1Score = 0;
         //display score
-        this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
         //scoreConfig.fixedWidth = 0;
         // Game Over flag
         this.gameOver = false;
@@ -61,14 +58,19 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);*/
-        this.time = this.add.text(game.config.width - borderUISize - borderPadding - scoreConfig.fixedWidth, borderUISize + borderPadding*2,'', scoreConfig);
-        this.startTime = Math.floor(this.sys.game.loop.time/1000)
         //white border
-        this.add.rectangle(0, 0, game.config.width, borderUISize, 0xffffff).setOrigin(0,0);
-        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xffffff).setOrigin(0,0);
-        this.add.rectangle(0, 0, borderUISize, game.config.height, 0xffffff).setOrigin(0,0);
-        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xffffff).setOrigin(0,0);
-    }
+        this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
+        this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0,0);
+        this.add.rectangle(0, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
+        this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0,0);
+    
+        this.time = this.add.text(game.config.width - borderPadding - scoreConfig.fixedWidth,  game.config.height - borderUISize - borderPadding / 2 ,'', scoreConfig);
+        this.startTime = Math.floor(this.sys.game.loop.time/1000)
+        scoreConfig.fixedWidth = 0;
+        this.scoreLeft = this.add.text( borderPadding, game.config.height - borderUISize - borderPadding / 2, this.p1Score, scoreConfig);
+        this.miniNuke = new Rocket(this, game.config.width/2, game.config.height - borderUISize, 'miniNukeG').setOrigin(0.5,0);
+        
+        }
     update(){
         const pointer = this.input.activePointer;
         pX = pointer.worldX;
@@ -80,7 +82,7 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)){
             this.scene.start('menuScene');
         }
-        this.starfield.tilePositionX -= 4;
+        //this.city.tilePositionX -= 4;
         if(!this.gameOver) {
             this.miniNuke.update(pointer.worldX, pointer.isDown, this.fly);
             this.ship01.update();
@@ -88,11 +90,14 @@ class Play extends Phaser.Scene {
             this.ship03.update();
             this.ship04.update();
             this.currentTime = (Math.floor(this.sys.game.loop.time/1000) - this.startTime).toString();
-            this.time.setText(`time : ${game.settings.gameTimer - this.currentTime } `);
+            while(game.settings.gameTimer - this.currentTime > 99){
+                game.settings.gameTimer --;
+            }
+            this.time.setText(`time:${game.settings.gameTimer - this.currentTime } `);
             if( this.currentTime > game.settings.gameTimer){
                 scoreConfig.fixedWidth = 0;
-                this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-                this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', scoreConfig).setOrigin(0.5);
+                this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', menuConfig).setOrigin(0.5);
+                this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart', menuConfig).setOrigin(0.5);
                 this.gameOver = true;
         }
         }
@@ -139,7 +144,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
         this.p1Score += ship.points;
-        game.settings.gameTimer += 10;
+        game.settings.gameTimer += 3;
         this.scoreLeft.text = this.p1Score;
         this.sound.play('sfx_explosion');
     }

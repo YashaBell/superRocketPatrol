@@ -4,23 +4,11 @@ class Difficulty extends Phaser.Scene {
     }
     preload(){}
     create(){
+        this.menu = this.add.tileSprite(0,0,640,480, 'menu').setOrigin(0,0);
+
         this.text1 = this.add.text(10, 10, '', { fill: '#00ff00' });
 
         //menu text configs
-        let menuConfig = {
-            fontFamily: 'Conrier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'right',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
-        menuConfig.backgroundColor = '#00FF00';
-        menuConfig.color = '#000';
         if(this.game.settings.inputType == 'KEYS'){
             this.add.text(game.config.width/2, game.config.height/2, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
         }
