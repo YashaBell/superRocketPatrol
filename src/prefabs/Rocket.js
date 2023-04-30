@@ -1,13 +1,21 @@
 class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
+
+        this.setSize(15,30);
+        this.setDisplaySize(15,30);
         this.sfxRocket = scene.sound.add('sfx_rocket');
         this.isFiring = false;
         this.moveSpeed = 2;
         this.canFire = false;
         scene.add.existing(this);
         this.fly = this.scene.add.sprite(-100, -100, 'miniNukeF').setOrigin(0.5,0);
+        this.fly.setSize(15,30);
+        this.fly.setDisplaySize(15,30);
         this.fly.anims.play('fired');
+        scoreConfig.align = 'center';
+        this.fireUI = scene.add.text(game.config.width/2 - scoreConfig.fixedWidth / 2 , borderUISize + borderPadding*2,'FIRE', scoreConfig);
+        this.fireUI.alpha = 0;
     }
 
     update(pX, pIsDown) {
@@ -28,7 +36,12 @@ class Rocket extends Phaser.GameObjects.Sprite {
             }
             // if fired move up
             if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+                this.fireUI.alpha = 1;
                 this.y -= this.moveSpeed;
+                this.alpha = 0;
+                this.fly.alpha = 1;
+                this.fly.x = this.x;
+                this.fly.y = this.y;
             }
             // reset on miss
             if(this.y <= borderUISize * 3 + borderPadding) {
@@ -54,6 +67,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
             }
             // if fired move up
             if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+                this.fireUI.alpha = 1;
                 this.y -= this.moveSpeed;
                 this.alpha = 0;
                 this.fly.alpha = 1;
@@ -70,6 +84,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         this.fly.x = -100;
         this.fly.y = -100;
         this.alpha = 1;
+        this.fireUI.alpha = 0;
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
         this.canFire = false;
