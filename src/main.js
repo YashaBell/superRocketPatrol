@@ -2,7 +2,9 @@ let config = {
     type: Phaser.CANVAS,
     width: 640,
     height: 480,
+    fps:{target: 30,},
     scene: [ Menu , Play , Difficulty ]
+
 }
 let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 15;

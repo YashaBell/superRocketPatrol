@@ -3,8 +3,8 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
     preload() {
-        this.load.spritesheet('miniNukeFlying', './assets/miniNuke.png', {frameWidth: 20, frameHeight: 43, startFrame: 0, endFrame: 2});
-        this.load.image('miniNuke', './assets/miniNukeGrounded.png');
+        this.load.spritesheet('miniNukeF', './assets/miniNuke.png', {frameWidth: 20, frameHeight: 43, startFrame: 0, endFrame: 3});
+        this.load.image('miniNukeG', './assets/miniNukeGrounded.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('interceptor', './assets/interceptor.png');
@@ -16,12 +16,19 @@ class Play extends Phaser.Scene {
 
         this.add.rectangle(0,borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00ff00).setOrigin(0,0);
         //add rocket (p1)
+        //animation config
         this.anims.create({
             key: 'fired',
-            frames: this.anims.generateFrameNumbers('miniNukeFlying', {start: 0, end: 2, first: 0}),
+            frames: this.anims.generateFrameNumbers('miniNukeF', {start: 1, end: 3, first: 1}),
+            frameRate: 10
+        });
+        this.anims.create ({
+            key: 'explode',
+            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
             frameRate: 30
         });
-        this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'miniNuke').setOrigin(0.5,0);
+
+        this.miniNuke = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'miniNukeG').setOrigin(0.5,0);
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30, 1).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20, 1).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10, 1).setOrigin(0,0);
@@ -33,12 +40,8 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //animation config
-        this.anims.create ({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
-            frameRate: 30
-        });
+        
+        
         // start score
         this.p1Score = 0;
         //display score
@@ -61,7 +64,6 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xffffff).setOrigin(0,0);
     }
     update(){
-
         const pointer = this.input.activePointer;
         pX = pointer.worldX;
         this.click = false;
@@ -74,7 +76,7 @@ class Play extends Phaser.Scene {
         }
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
-            this.p1Rocket.update(pointer.worldX, pointer.isDown);
+            this.miniNuke.update(pointer.worldX, pointer.isDown, this.fly);
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
@@ -89,20 +91,20 @@ class Play extends Phaser.Scene {
         }
         this.sys.game.loop.delta
         //collision detection
-        if(this.checkCollision(this.p1Rocket, this.ship04)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.miniNuke, this.ship04)) {
+            this.miniNuke.reset();
             this.shipExplode(this.ship04);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.miniNuke, this.ship03)) {
+            this.miniNuke.reset();
             this.shipExplode(this.ship03);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.miniNuke, this.ship02)) {
+            this.miniNuke.reset();
             this.shipExplode(this.ship02);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.miniNuke, this.ship01)) {
+            this.miniNuke.reset();
             this.shipExplode(this.ship01);
         }
     }

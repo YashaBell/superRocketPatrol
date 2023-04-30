@@ -2,13 +2,16 @@ class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
         this.sfxRocket = scene.sound.add('sfx_rocket');
-        scene.add.existing(this);
         this.isFiring = false;
         this.moveSpeed = 2;
         this.canFire = false;
+        scene.add.existing(this);
+        this.fly = this.scene.add.sprite(-100, -100, 'miniNukeF').setOrigin(0.5,0);
+        this.fly.anims.play('fired');
     }
 
     update(pX, pIsDown) {
+        this.fly.on('animationcomplete', () => {this.fly.anims.play('fired');});
         if(game.settings.inputType == 'KEYS'){
             // left right movement
             if(!this.isFiring) {
@@ -51,10 +54,11 @@ class Rocket extends Phaser.GameObjects.Sprite {
             }
             // if fired move up
             if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
-                this.alpha = 0;
-                let fly = play.add.sprite(ship.x, ship.y, 'miniNukeFlying').setOrigin(0,0);
-                fly.anims.play('fired'); //play animation
                 this.y -= this.moveSpeed;
+                this.alpha = 0;
+                this.fly.alpha = 1;
+                this.fly.x = this.x;
+                this.fly.y = this.y;
             }
             // reset on miss
             if(this.y <= borderUISize * 3 + borderPadding) {
@@ -63,6 +67,9 @@ class Rocket extends Phaser.GameObjects.Sprite {
         }
     }
     reset() {
+        this.fly.x = -100;
+        this.fly.y = -100;
+        this.alpha = 1;
         this.isFiring = false;
         this.y = game.config.height - borderUISize - borderPadding;
         this.canFire = false;
