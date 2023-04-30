@@ -5,7 +5,7 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.spritesheet('miniNukeF', './assets/miniNuke.png', {frameWidth: 20, frameHeight: 43, startFrame: 0, endFrame: 3});
         this.load.image('miniNukeG', './assets/miniNukeGrounded.png');
-        this.load.spritesheet('vertibird', './assets/vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 8});
+        this.load.spritesheet('vertibird', './assets/Vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 8});
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('city', './assets/cityScape.png');
         this.load.image('interceptor', './assets/interceptor.png');
