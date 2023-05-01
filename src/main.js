@@ -65,4 +65,4 @@ function MouseInTextBox(pointerX, pointerY, textBox){
 // Implement an alternating two-player mode (15)
         // Implement a new timing/scoring mechanism that adds time to the clock for successful hits (15)
         // Implement mouse control for player movement and mouse click to fire (15)
-// Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship (15)
+        // Use Phaser's particle emitter to create a particle explosion when the rocket hits the spaceship (15)

@@ -8,7 +8,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('vertibird', './assets/Vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 7});
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('city', './assets/cityScape.png');
-        this.load.image('interceptor', './assets/interceptor.png');
+        this.load.image('powerarmor', './assets/powerarmor.png');
         this.load.atlas('debris', './assets/vertibirdBits.png', './assets/vertibirdBits.json')
     }
     create(){
@@ -24,14 +24,14 @@ class Play extends Phaser.Scene {
         });
         this.anims.create({
             key: 'zoom',
-            frames: this.anims.generateFrameNumbers('vertibird', {start: 0, end: 8, first: 0}),
+            frames: this.anims.generateFrameNumbers('vertibird', {start: 0, end: 7, first: 0}),
             frameRate: 10
         });
         
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize     + borderPadding    , 'vertibird', 0, 30, 1).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize * 2 + borderPadding * 3, 'vertibird', 0, 20, 1).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width,                  borderUISize * 3 + borderPadding * 5, 'vertibird', 0, 10, 1).setOrigin(0,0);
-        this.ship04 = new Spaceship(this, game.config.width,                  borderUISize * 4 + borderPadding * 7, 'vertibird', 0, 40, 2).setOrigin(0,0);
+        this.ship04 = new Spaceship(this, game.config.width,                  borderUISize * 4 + borderPadding * 7, 'powerarmor', 0, 40, 2).setOrigin(0,0);
         
         //key binds
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
