@@ -5,11 +5,10 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.spritesheet('miniNukeF', './assets/miniNuke.png', {frameWidth: 20, frameHeight: 43, startFrame: 0, endFrame: 3});
         this.load.image('miniNukeG', './assets/miniNukeGrounded.png');
-        this.load.spritesheet('vertibird', './assets/Vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 8});
+        this.load.spritesheet('vertibird', './assets/Vertibird.png', {frameWidth: 263, frameHeight: 163, startFrame: 0, endFrame: 7});
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('city', './assets/cityScape.png');
         this.load.image('interceptor', './assets/interceptor.png');
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.atlas('debris', './assets/vertibirdBits.png', './assets/vertibirdBits.json')
     }
     create(){
@@ -28,12 +27,7 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers('vertibird', {start: 0, end: 8, first: 0}),
             frameRate: 10
         });
-        this.anims.create ({
-            key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', {start: 0, end: 9, first: 0}),
-            frameRate: 30
-        });
-
+        
         this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize     + borderPadding    , 'vertibird', 0, 30, 1).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize * 2 + borderPadding * 3, 'vertibird', 0, 20, 1).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width,                  borderUISize * 3 + borderPadding * 5, 'vertibird', 0, 10, 1).setOrigin(0,0);
