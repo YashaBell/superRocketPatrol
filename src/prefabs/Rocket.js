@@ -1,8 +1,8 @@
 class Rocket extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame){
         super(scene, x, y, texture, frame);
-        this.setSize(15,30);
-        this.setDisplaySize(15,30);
+        this.setSize(10,20);
+        this.setDisplaySize(10,20);
         this.y -= this.displayHeight;
         this.sfxRocket = scene.sound.add('sfx_rocket');
         this.isFiring = false;
@@ -10,8 +10,8 @@ class Rocket extends Phaser.GameObjects.Sprite {
         this.canFire = false;
         scene.add.existing(this);
         this.fly = this.scene.add.sprite(-100, -100, 'miniNukeF').setOrigin(0.5,0);
-        this.fly.setSize(15,30);
-        this.fly.setDisplaySize(15,30);
+        this.fly.setSize(10,20);
+        this.fly.setDisplaySize(10,20);
         this.fly.anims.play('fired');
         scoreConfig.align = 'center';
         scoreConfig.color = '#ff0000';
@@ -36,7 +36,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
                 this.sfxRocket.play();
             }
             // if fired move up
-            if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+            if(this.isFiring && this.y >= borderUISize) {
                 this.fireUI.alpha = 1;
                 this.y -= this.moveSpeed;
                 this.alpha = 0;
@@ -45,7 +45,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
                 this.fly.y = this.y;
             }
             // reset on miss
-            if(this.y <= borderUISize * 3 + borderPadding) {
+            if(this.y <= borderUISize) {
                 this.reset();
             }
         }
@@ -67,7 +67,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
                 this.sfxRocket.play();
             }
             // if fired move up
-            if(this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
+            if(this.isFiring && this.y >= borderUISize) {
                 this.fireUI.alpha = 1;
                 this.y -= this.moveSpeed;
                 this.alpha = 0;
@@ -76,7 +76,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
                 this.fly.y = this.y;
             }
             // reset on miss
-            if(this.y <= borderUISize * 3 + borderPadding) {
+            if(this.y <= borderUISize) {
                 this.reset();
             }
         }

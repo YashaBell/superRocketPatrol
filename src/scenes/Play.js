@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('city', './assets/cityScape.png');
         this.load.image('interceptor', './assets/interceptor.png');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.atlas('debris', './assets/vertibirdBits.png', './assets/vertibirdBits.json')
     }
     create(){
         //tile sprite
@@ -33,10 +34,10 @@ class Play extends Phaser.Scene {
             frameRate: 30
         });
 
-        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'vertibird', 0, 30, 1).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'vertibird', 0, 20, 1).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'vertibird', 0, 10, 1).setOrigin(0,0);
-        this.ship04 = new Spaceship(this, game.config.width, borderUISize*7 + borderPadding*5, 'vertibird', 0, 40, 2).setOrigin(0,0);
+        this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize     + borderPadding    , 'vertibird', 0, 30, 1).setOrigin(0,0);
+        this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize * 2 + borderPadding * 3, 'vertibird', 0, 20, 1).setOrigin(0,0);
+        this.ship03 = new Spaceship(this, game.config.width,                  borderUISize * 3 + borderPadding * 5, 'vertibird', 0, 10, 1).setOrigin(0,0);
+        this.ship04 = new Spaceship(this, game.config.width,                  borderUISize * 4 + borderPadding * 7, 'vertibird', 0, 40, 2).setOrigin(0,0);
         
         //key binds
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -136,13 +137,19 @@ class Play extends Phaser.Scene {
         //hide ship
         ship.fly.alpha = 0;
         // create explosion at ship location
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
-        boom.anims.play('explode'); //play animation
-        boom.on('animationcomplete', () => {
-            ship.reset();
-            ship.fly.alpha = 1;
-            boom.destroy();
+        let particle = this.add.particles(ship.x, ship.y, 'debris',{
+            frame: { frames: [ 'vertiBit_01', 'vertiBit_02', 'vertiBit_03', 'vertiBit_04', 'vertiBit_05', 'vertiBit_06', 'vertiBit_07', 'vertiBit_08', 'vertiBit_09', 'vertiBit_10'], cycle: true },
+            scale: .5,
+            speed: 200,
+            lifespan: 1000,
+            gravityY: 200,
+            stopAfter: 10
         });
+        
+        particle.on('complete', () => {
+             ship.reset();
+             ship.fly.alpha = 1;
+         });
         this.p1Score += ship.points;
         game.settings.gameTimer += 3;
         this.scoreLeft.text = this.p1Score;
