@@ -1,10 +1,12 @@
 class Spaceship extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame, pointValue, speedMulti){
         super(scene, x, y, texture, frame);
+        this.frameName= texture;
+        console.log(this.frameName);
         scene.add.existing(this);
         this.points = pointValue;
         this.moveSpeed = speedMulti * game.settings.spaceshipSpeed;
-        if(frame != 'powerarmor'){
+        if(this.frameName != 'powerarmor'){
             this.setSize(80,50);
             this.setDisplaySize(80,50);
             this.fly = this.scene.add.sprite(this.x, this.y , 'vertibird').setOrigin(0,0);
@@ -16,7 +18,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        if(this.frame != 'powerarmor'){
+        if(this.frameName != 'powerarmor'){
             this.fly.x = this.x;
             this.fly.y = this.y;
             this.fly.on('animationcomplete', () => {this.fly.anims.play('zoom');});
@@ -29,6 +31,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
 
     reset() {
         this.x = game.config.width;
-        if(this.frame != 'powerarmor'){this.fly.x = game.config.width;}
+
+        if(this.frameName = 'powerarmor'){this.alpha = 1;}
     }
 }

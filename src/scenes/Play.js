@@ -129,20 +129,22 @@ class Play extends Phaser.Scene {
 
     shipExplode(ship) {
         //hide ship
-        ship.fly.alpha = 0;
+        ship.alpha = 0;
+        if(ship.frameName != 'powerarmor'){ship.fly.alpha = 0;}
         // create explosion at ship location
         let particle = this.add.particles(ship.x, ship.y, 'debris',{
             frame: { frames: [ 'vertiBit_01', 'vertiBit_02', 'vertiBit_03', 'vertiBit_04', 'vertiBit_05', 'vertiBit_06', 'vertiBit_07', 'vertiBit_08', 'vertiBit_09', 'vertiBit_10'], cycle: true },
             scale: .5,
-            speed: 200,
+            speed: 100,
             lifespan: 1000,
             gravityY: 200,
             stopAfter: 10
+
         });
         
         particle.on('complete', () => {
-             ship.reset();
-             ship.fly.alpha = 1;
+            ship.reset();
+            if(ship.frameName != 'powerarmor'){ship.fly.alpha = 1;}
          });
         this.p1Score += ship.points;
         game.settings.gameTimer += 3;

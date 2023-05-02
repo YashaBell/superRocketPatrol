@@ -20,6 +20,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     }
 
     update(pX, pIsDown) {
+        
         this.fly.on('animationcomplete', () => {this.fly.anims.play('fired');});
         if(game.settings.inputType == 'KEYS'){
             // left right movement
